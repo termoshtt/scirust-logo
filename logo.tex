@@ -1,0 +1,27 @@
+\RequirePackage{luatex85}
+\documentclass{standalone}
+\usepackage{txfonts}
+\usepackage{tikz}
+
+% #1 number of teeths
+% #2 radius intern
+% #3 radius extern
+% #4 angle from start to end of the first arc
+% #5 angle to decale the second arc from the first
+% #6 inner radius to cut off
+
+\newcommand{\gear}[6]{%
+  (0:#2)
+  \foreach \i [evaluate=\i as \n using {\i-1)*360/#1}] in {1,...,#1}{%
+    arc (\n:\n+#4:#2) {[rounded corners=1.5pt] -- (\n+#4+#5:#3)
+    arc (\n+#4+#5:\n+360/#1-#5:#3)} --  (\n+360/#1:#2)
+  }%
+  (0,0) circle[radius=#6] 
+}
+\begin{document}
+\begin{tikzpicture}
+   \draw (-0.35, -0.1) node[scale=8] {$\varmathbb{R}$};
+   \draw (0.8, 0.75) node[scale=4] {$N$};
+   \fill[even odd rule] \gear{30}{2.0}{2.2}{2}{4}{1.6};
+ \end{tikzpicture}
+\end{document}
